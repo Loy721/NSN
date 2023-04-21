@@ -1,11 +1,10 @@
 package com.example.nsn.rest;
 
+import com.example.nsn.dto.UserDto;
 import com.example.nsn.entity.User;
 import com.example.nsn.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,5 +18,10 @@ public class restControllerV1User {
     @GetMapping("/")
     public List<User> getAll() {
         return userService.getAll();
+    }
+
+    @PostMapping("/update")
+    public User update(@RequestBody UserDto user) {
+        return userService.updateUser(user);
     }
 }

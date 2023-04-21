@@ -18,7 +18,7 @@ public class restControllerV1Post {
     private PostService postService;
 
     @GetMapping("/")
-    public List<Post> getAll(){
+    public List<Post> getAll() {
         return postService.getAll();
     }
 }
