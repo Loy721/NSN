@@ -8,6 +8,11 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+  mvc:
+    dispatch-options-request: true
 
 server:
-  port: 8081
+  port: 8082
+
+
+

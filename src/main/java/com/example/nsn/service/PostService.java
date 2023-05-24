@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface PostService {
     List<Post> getAll();
-    Post update(Post post);
+    Post get(PostPK postPK);
+    Post edit(Post post);
     void delete(PostPK postPk);
+    Post create(Post post);
 }

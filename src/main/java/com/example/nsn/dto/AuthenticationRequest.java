@@ -1,4 +1,4 @@
-package com.example.nsn.model;
+package com.example.nsn.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,6 +10,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthenticationRequest {
-    private String username;
+    private String email;
     private String password;
 }

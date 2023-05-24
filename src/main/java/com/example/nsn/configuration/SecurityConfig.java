@@ -4,6 +4,7 @@ import com.example.nsn.filter.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -22,6 +23,7 @@ public class SecurityConfig {
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
 
+    private final String[] PUBLIC_ROUTES = {"/auth/signin", "/auth/signup"};
 
     protected void configure(@Autowired AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService);
@@ -34,13 +36,19 @@ public class SecurityConfig {
 
     @Bean
     protected SecurityFilterChain configuration(@Autowired HttpSecurity http) throws Exception {
-        http.csrf().disable()
-                .authorizeHttpRequests().requestMatchers("/login", "/registration").permitAll().
-                anyRequest().authenticated().and()
-                .exceptionHandling().and().sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-        return http.build();
+        return http
+                .httpBasic().disable()
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeHttpRequests(
+                        authz -> authz
+                                .requestMatchers(PUBLIC_ROUTES).permitAll()
+                                .requestMatchers(HttpMethod.OPTIONS).permitAll()
+                                .anyRequest().authenticated()
+                                .and()
+                                .addFilterAfter(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+                ).build();
     }
 
     @SuppressWarnings("deprecation")

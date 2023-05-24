@@ -20,7 +20,17 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post update(Post post) {
+    public Post create(Post post) {
+        return postRepository.saveAndFlush(post);
+    }
+
+    @Override
+    public Post get(PostPK postPK) {
+        return postRepository.findByPostPk(postPK);
+    }
+
+    @Override
+    public Post edit(Post post) {
         return postRepository.saveAndFlush(post);
     }
 

@@ -1,6 +1,7 @@
 package com.example.nsn.service.impl;
 
 import com.example.nsn.dto.UserDto;
+import com.example.nsn.entity.Post;
 import com.example.nsn.entity.User;
 import com.example.nsn.mapper.UserMapper;
 import com.example.nsn.repo.UserRepository;
@@ -15,6 +16,7 @@ import java.util.List;
 public class UserServiceImpl  implements UserService {
     @Autowired
     private UserRepository userRepository;
+
 
     @Override
     public List<User> getAll() {
@@ -34,12 +36,17 @@ public class UserServiceImpl  implements UserService {
     }
 
     @Override
-    public void deleteUser(String uid) {
-        userRepository.deleteById(uid);
+    public User updateUser(User user) {
+        return  userRepository.save(user);
     }
 
     @Override
-    public List<User> getAllBySurnameAndName(@RequestParam String name,@RequestParam String surname) {
+    public void deleteUser(User user) {
+        userRepository.delete(user);
+    }
+
+    @Override
+    public List<User> getAllByNameAndSurname(String name, String surname) {
         return userRepository.findAllByNameAndSurname(name,surname);
     }
 

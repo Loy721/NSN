@@ -1,6 +1,7 @@
 package com.example.nsn.service;
 
 import com.example.nsn.dto.UserDto;
+import com.example.nsn.entity.Post;
 import com.example.nsn.entity.User;
 import com.example.nsn.repo.UserRepository;
 
@@ -13,6 +14,7 @@ public interface UserService {
     User getByEmail(String email);
     User addUser(UserDto user);
     User updateUser(UserDto user);
-    void deleteUser(String s);
-    List<User> getAllBySurnameAndName(String name, String surname);
+    User updateUser(User user);
+    void deleteUser(User user);
+    List<User> getAllByNameAndSurname(String name, String surname);
 }

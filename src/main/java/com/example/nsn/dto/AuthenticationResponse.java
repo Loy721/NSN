@@ -1,4 +1,4 @@
-package com.example.nsn.model;
+package com.example.nsn.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,5 +8,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Getter
 public class AuthenticationResponse implements Serializable {
-    private final String jwt;
+    private final String accessToken;
+    private final String uid;
 }
