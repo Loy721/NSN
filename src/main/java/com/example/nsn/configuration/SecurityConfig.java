@@ -6,31 +6,27 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 public class SecurityConfig {
-    @Autowired
-    private UserDetailsService userDetailsService;
+    private final JwtRequestFilter jwtRequestFilter;
 
     @Autowired
-    private JwtRequestFilter jwtRequestFilter;
-
-    private final String[] PUBLIC_ROUTES = {"/auth/signin", "/auth/signup"};
-
-    protected void configure(@Autowired AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService);
+    public SecurityConfig(JwtRequestFilter jwtRequestFilter) {
+        this.jwtRequestFilter = jwtRequestFilter;
     }
 
+    private final String[] PUBLIC_ROUTES = {"/api/v1/auth/signin", "/api/v1/auth/signup"};
+
     @Bean
-    AuthenticationManager authenticationManager(@Autowired AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    @Autowired
+    AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
@@ -39,6 +35,7 @@ public class SecurityConfig {
         return http
                 .httpBasic().disable()
                 .csrf().disable()
+                .cors().and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests(
@@ -47,13 +44,13 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.OPTIONS).permitAll()
                                 .anyRequest().authenticated()
                                 .and()
-                                .addFilterAfter(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+                                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
                 ).build();
     }
 
     @SuppressWarnings("deprecation")
     @Bean
-    public static NoOpPasswordEncoder passwordEncoder() {
+    public static NoOpPasswordEncoder passwordEncoder() {//TODO
         return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
     }
 }

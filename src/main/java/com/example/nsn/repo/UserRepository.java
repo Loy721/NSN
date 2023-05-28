@@ -11,6 +11,8 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     User findByEmail(String email);
 
+    Boolean existsByEmail(String email);
+
     @Query("SELECT u FROM User u WHERE u.name=?1 AND u.surname=?2 ORDER BY u.surname, u.name")
     List<User> findAllByNameAndSurname(String name, String surname);
 }

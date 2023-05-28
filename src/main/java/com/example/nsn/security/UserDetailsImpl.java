@@ -18,6 +18,7 @@ public class UserDetailsImpl implements UserDetails {
     private String password;
     private boolean isActive;
     private Set<Role> roles;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;
@@ -32,7 +33,6 @@ public class UserDetailsImpl implements UserDetails {
     public String getUsername() {
         return uid;
     }
-
 
     @Override
     public boolean isAccountNonExpired() {
