@@ -1,3 +1,4 @@
 # NSN - Социальная сеть
 Физическая схема БД:
-![image](https://github.com/Loy721/NSN/assets/76161382/66309976-5ea6-4c75-8fb6-9335aaab2726)
+![image](https://github.com/Loy721/NSN/assets/76161382/ddfab5cb-9f4e-46a6-801d-39bdb2005e00)
+
